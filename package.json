@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "npm run build && node app",
     "build": "ng build --prod",
+    "postinstall": "npm start",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
