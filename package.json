@@ -4,9 +4,10 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "npm run build && node app",
+    "start": "node app",
     "build": "ng build --prod",
-    "postinstall": "npm start",
+    "dev": "npm run build && npm start",
+    "postinstall": "npm run build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
