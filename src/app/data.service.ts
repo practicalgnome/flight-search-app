@@ -8,7 +8,7 @@ export class DataService {
   constructor(private http: Http) { }
 
   getData(params) {
-    return this.http.get('http://localhost:3000/search', {params});
+    return this.http.get('/search', {params});
   }
 
 }
