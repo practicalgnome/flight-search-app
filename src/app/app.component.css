@@ -49,3 +49,10 @@ button:disabled {
         border: none;
     } 
 }
+
+@media only screen and (max-width: 600px) {
+    .jumbotron {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+}
