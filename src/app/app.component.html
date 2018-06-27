@@ -6,13 +6,12 @@
 </button> -->
 
 <!-- Modal -->
-
-<button mat-button>Basic</button>
+<!-- <button mat-button>Basic</button>
 <button mat-button color="primary">Primary</button>
 <button mat-button color="accent">Accent</button>
 <button mat-button color="warn">Warn</button>
 <button mat-button disabled>Disabled</button>
-<a mat-button routerLink=".">Link</a>
+<a mat-button routerLink=".">Link</a> -->
 <div 
   class="modal fade"
   id="exampleModalCenter" 
@@ -70,9 +69,9 @@
           <div class="input-group-prepend">
             <span class="input-group-text">From</span>
           </div>
-          <input type="text" class="form-control" name="from" placeholder="..." required (keyup)="keyPress($event)" ngModel="{{selectedFrom}}">
+          <input type="text" class="form-control" name="from" placeholder="..." required (keyup)="keyPress($event, true)" ngModel="{{selectedFrom}}">
           <select class="form-control"  (change)="onSelectFrom($event)">
-            <option *ngFor="let res of dynResults">{{ res.label }}</option>
+            <option *ngFor="let res of dynResultsFrom">{{ res.label }}</option>
           </select>
         </div>
       </div>
@@ -84,7 +83,7 @@
           </div>
           <input type="text" class="form-control" name="to" placeholder="..." required (keyup)="keyPress($event)" ngModel="{{selectedTo}}">
           <select class="form-control"  (change)="onSelectTo($event)">
-            <option *ngFor="let res of dynResults">{{ res.label }}</option>
+            <option *ngFor="let res of dynResultsTo">{{ res.label }}</option>
           </select>
         </div>
       </div>

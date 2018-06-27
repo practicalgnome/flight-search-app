@@ -19,7 +19,8 @@ export class AppComponent {
   currency;
   results;
 
-  dynResults;
+  dynResultsFrom;
+  dynResultsTo;
   selectedFrom;
   selectedTo;
 
@@ -56,10 +57,10 @@ export class AppComponent {
     window.print();
   }
 
-  keyPress(e) {
+  keyPress(e, from) {
     this.dataService.dynSearch(e.target.value)
       .map(res => {        
-        this.dynResults = res.json();
+        from ? this.dynResultsFrom = res.json() : this.dynResultsTo = res.json();
         return res.json()}).subscribe();
   }
 
