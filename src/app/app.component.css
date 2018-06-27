@@ -25,6 +25,10 @@ button:disabled {
     min-width: 60px;
 }
 
+.modal-header .close {
+    display:none;
+}
+
 
 .modal.fade.show {
     background-color: rgba(0, 0, 0, 0.5)
