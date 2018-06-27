@@ -1,3 +1,4 @@
+// import { MatButtonModule } from './material/material.module';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
@@ -17,6 +18,10 @@ export class AppComponent {
   origin;
   currency;
   results;
+
+  dynResults;
+  selectedFrom;
+  selectedTo;
 
   errResponse = false;
   isLoaded = false;
@@ -49,6 +54,24 @@ export class AppComponent {
 
   printPage() {
     window.print();
+  }
+
+  keyPress(e) {
+    this.dataService.dynSearch(e.target.value)
+      .map(res => {        
+        this.dynResults = res.json();
+        return res.json()}).subscribe();
+  }
+
+  onSelectFrom(e) {
+    this.originFull = e.target.value;
+    this.selectedFrom = e.target.value.slice(-4,-1);
+    console.log(e.target.value);
+  }
+
+  onSelectTo(e) {
+    this.selectedTo = e.target.value.slice(-4,-1);
+    console.log(e.target.value);
   }
 
 }

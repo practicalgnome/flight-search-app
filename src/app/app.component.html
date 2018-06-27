@@ -6,6 +6,13 @@
 </button> -->
 
 <!-- Modal -->
+
+<button mat-button>Basic</button>
+<button mat-button color="primary">Primary</button>
+<button mat-button color="accent">Accent</button>
+<button mat-button color="warn">Warn</button>
+<button mat-button disabled>Disabled</button>
+<a mat-button routerLink=".">Link</a>
 <div 
   class="modal fade"
   id="exampleModalCenter" 
@@ -27,8 +34,8 @@
       <div class="modal-body">
         <div *ngIf="isLoaded && !errResponse">
           <div *ngFor="let res of results">
-            <p>From: {{ originFull.charAt(0).toUpperCase() + originFull.slice(1) }}    {{ origin }}</p>
-            <p>Destination: {{ destinationFull.charAt(0).toUpperCase() + destinationFull.slice(1) }}    {{ res.destination }}</p>
+            <p>From:{{ origin }} {{ originFull }}</p>
+            <p>Destination: {{ res.destination }}</p>
             <p>Company name: {{ res.airline }}</p>
             <p>Cost: {{ res.price }} {{currency}}</p>
             <p>Date: {{ res.departure_date }}</p>
@@ -57,22 +64,47 @@
   <hr class="my-4">
   <div class="form">
     <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" autocomplete="off">
+
       <div class="form-group">
         <div class="input-group mb-6">
           <div class="input-group-prepend">
             <span class="input-group-text">From</span>
           </div>
-          <input type="text" class="form-control" name="from" placeholder="..." required ngModel>
+          <input type="text" class="form-control" name="from" placeholder="..." required (keyup)="keyPress($event)" ngModel="{{selectedFrom}}">
+          <select class="form-control"  (change)="onSelectFrom($event)">
+            <option *ngFor="let res of dynResults">{{ res.label }}</option>
+          </select>
         </div>
       </div>
+
       <div class="form-group">
+        <div class="input-group mb-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text">To</span>
+          </div>
+          <input type="text" class="form-control" name="to" placeholder="..." required (keyup)="keyPress($event)" ngModel="{{selectedTo}}">
+          <select class="form-control"  (change)="onSelectTo($event)">
+            <option *ngFor="let res of dynResults">{{ res.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- <div class="form-group">
+        <div class="input-group mb-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text">From</span>
+          </div>
+          <input type="text" class="form-control" name="from" placeholder="..." required ngModel="thisssj">
+        </div>
+      </div> -->
+      <!-- <div class="form-group">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">To</span>
           </div>
           <input type="text" class="form-control" name="to" placeholder="..." required ngModel>
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <div class="input-group mb-6">
           <div class="input-group-prepend">

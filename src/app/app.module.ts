@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { DataService } from './data.service';
+import { MaterialModule } from './material/material.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { DataService } from './data.service';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    MaterialModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

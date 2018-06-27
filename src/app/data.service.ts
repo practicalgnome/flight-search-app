@@ -15,6 +15,10 @@ export class DataService implements OnDestroy {
   rootUrl = "https://api.sandbox.amadeus.com/v1.2";
   response;
 
+  dynSearch(params) {
+    return this.http.get(`${this.rootUrl}/airports/autocomplete?apikey=${this.apiKey}&term=${params}`);
+  }
+
   getData(params) {
     Observable.forkJoin(
       this.http.get(`${this.rootUrl}/airports/autocomplete?apikey=${this.apiKey}&term=${params.from}`)
