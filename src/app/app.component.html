@@ -45,7 +45,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="modal-button btn btn-secondary" data-dismiss="modal" (click)="modalClose()">Close</button>
-        <button type="button" class="modal-button btn btn-info" (click)="printPage()" [disabled]="errResponse">Print results</button>
+        <button type="button" class="modal-button btn btn-info" (click)="printPage()" [disabled]="true">Print results</button>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">From</span>
           </div>
-          <input type="text" class="form-control" name="from" placeholder="..." required ngModel="Mumbai">
+          <input type="text" class="form-control" name="from" placeholder="..." required ngModel>
         </div>
       </div>
       <div class="form-group">
@@ -70,7 +70,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">To</span>
           </div>
-          <input type="text" class="form-control" name="to" placeholder="..." required ngModel="Delhi">
+          <input type="text" class="form-control" name="to" placeholder="..." required ngModel>
         </div>
       </div>
       <div class="form-group">

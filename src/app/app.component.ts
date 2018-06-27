@@ -38,6 +38,7 @@ export class AppComponent {
     }, 1000);
     
     form.reset();
+    this.dataService.response = "";
   }
 
   modalClose() {

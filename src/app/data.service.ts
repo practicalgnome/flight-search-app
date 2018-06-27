@@ -37,6 +37,7 @@ export class DataService implements OnDestroy {
     });   
   }
 
+  
   ngOnDestroy() {
     console.log('destrooooyed');
   }
