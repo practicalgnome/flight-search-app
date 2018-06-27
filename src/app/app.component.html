@@ -81,7 +81,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">To</span>
           </div>
-          <input type="text" class="form-control" name="to" placeholder="..." required (keyup)="keyPress($event)" ngModel="{{selectedTo}}">
+          <input type="text" class="form-control" name="to" placeholder="..." required (keyup)="keyPress($event, false)" ngModel="{{selectedTo}}">
           <select class="form-control"  (change)="onSelectTo($event)">
             <option *ngFor="let res of dynResultsTo">{{ res.label }}</option>
           </select>
