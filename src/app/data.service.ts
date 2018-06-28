@@ -11,7 +11,7 @@ export class DataService implements OnDestroy {
 
   constructor(private http: Http) { }
 
-  apiKey = "016oM57ySJJo63PELNetcAan40sphvOj";
+  apiKey = "";
   rootUrl = "https://api.sandbox.amadeus.com/v1.2";
   response;
 
