@@ -1,17 +1,15 @@
 const express = require('express')
 const path = require('path');
 const axios = require('axios');
-const apiKey = require('./amdeusApiKey');
+const apiKey = require('./amadeusApiKey');
 // const bodyParser = require('body-parser');
 
 const app = express()
 
 // app.use(bodyParser.json());
 
-
 const port = process.env.PORT || 3000;
 
-// const apiKey = "KQs0UCuhDn3AlEPYPgFbs74yZFVV805t";
 const rootUrl = "https://api.sandbox.amadeus.com/v1.2";
 
 // const apiRouter = require("./apiRouter")
@@ -49,7 +47,7 @@ app.get('/search', (req, res) => {
       res.send(response.data);
     })
     .catch(error => {
-      res.send(error);
+      res.send(error.message);
     });
 });
 
