@@ -17,6 +17,7 @@ export class AppComponent {
   destinationFull;
   origin;
   currency;
+  response;
   results;
 
   dynResultsFrom;
@@ -27,63 +28,54 @@ export class AppComponent {
   errResponse = false;
   isLoaded = false;
 
-  onSubmit(form: NgForm) {
-    this.originFull = form.value.from;
-    this.destinationFull = form.value.to;
-    this.dataService.getData(form.value);
-    setTimeout(() => {
-      if (this.dataService.response) {
-        this.origin = this.dataService.response.origin;
-        this.currency = this.dataService.response.currency;
-        this.results = this.dataService.response.results;
-        this.isLoaded = true;
-      } else {
-        this.errResponse = true;
-        this.isLoaded = true;
-      }
-    }, 1000);
+onSubmit(form: NgForm) {
+
+  this.dataService.getData(form.value)
+    .subscribe(res => this.response = res.json());
+  setTimeout(() => {
+    if (this.response) {
+      this.origin = this.response.origin;
+      this.currency = this.response.currency;
+      this.results = this.response.results;
+      this.isLoaded = true;
+    } else {
+      this.errResponse = true;
+      this.isLoaded = true;
     
-    form.reset();
-    this.dataService.response = "";
-  }
+    }
+  }, 1000);
+  form.reset();
+  this.response = "";
+}
 
   modalClose() {
-    console.log("closed");
     this.errResponse = false;
     this.isLoaded = false;
+    this.dynResultsFrom = [];
+    this.dynResultsTo = [];
   }
 
   printPage() {
     window.print();
   }
 
-  keyPress(e, from) {
-    this.dataService.dynSearch(e.target.value)
+  keyPress(e, flag) {
+    flag = flag || false;
+    this.dataService.dynSearch({city: e.target.value})
       .map(res => {        
-        from ? this.dynResultsFrom = res.json() : this.dynResultsTo = res.json();
-        return res.json()}).subscribe();
+        flag ? this.dynResultsFrom = res.json() : this.dynResultsTo = res.json();
+        return res.json()})
+          .subscribe();
   }
 
   onSelectFrom(e) {
     this.originFull = e.target.value;
     this.selectedFrom = e.target.value.slice(-4,-1);
-    console.log(e.target.value);
   }
 
   onSelectTo(e) {
+    this.destinationFull = e.target.value;
     this.selectedTo = e.target.value.slice(-4,-1);
-    console.log(e.target.value);
   }
 
 }
-
-// {
-//   "origin" : "MUC",
-//   "currency" : "EUR",
-//   "results" : [ {
-//     "destination" : "BKK",
-//     "departure_date" : "2018-06-26",
-//     "price" : "411.44",
-//     "airline" : "TG"
-//   } ]
-// }
