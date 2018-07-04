@@ -1,7 +1,10 @@
-// import { MatButtonModule } from './material/material.module';
+import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalComponent } from './modal/modal.component';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -9,9 +12,9 @@ import { DataService } from './data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private _formBuilder: FormBuilder, public dialog: MatDialog) {}
 
   originFull;
   destinationFull;
@@ -19,6 +22,7 @@ export class AppComponent {
   currency;
   response;
   results;
+  spinner = false;
 
   dynResultsFrom;
   dynResultsTo;
@@ -28,25 +32,26 @@ export class AppComponent {
   errResponse = false;
   isLoaded = false;
 
-onSubmit(form: NgForm) {
 
-  this.dataService.getData(form.value)
-    .subscribe(res => this.response = res.json());
-  setTimeout(() => {
-    if (this.response) {
-      this.origin = this.response.origin;
-      this.currency = this.response.currency;
-      this.results = this.response.results;
-      this.isLoaded = true;
-    } else {
-      this.errResponse = true;
-      this.isLoaded = true;
-    
-    }
-  }, 1000);
-  form.reset();
-  this.response = "";
-}
+  onSubmit(form: NgForm) {
+
+    this.dataService.getData(form.value)
+      .subscribe(res => this.response = res.json());
+    setTimeout(() => {
+      if (this.response) {
+        this.origin = this.response.origin;
+        this.currency = this.response.currency;
+        this.results = this.response.results;
+        this.isLoaded = true;
+      } else {
+        this.errResponse = true;
+        this.isLoaded = true;
+      
+      }
+    }, 1000);
+    form.reset();
+    this.response = "";
+  }
 
   modalClose() {
     this.errResponse = false;
@@ -59,23 +64,66 @@ onSubmit(form: NgForm) {
     window.print();
   }
 
-  keyPress(e, flag) {
-    flag = flag || false;
+  keyPress(e) {
     this.dataService.dynSearch({city: e.target.value})
-      .map(res => {        
-        flag ? this.dynResultsFrom = res.json() : this.dynResultsTo = res.json();
-        return res.json()})
-          .subscribe();
+      .subscribe(res => this.dynResultsFrom = res.json());
   }
 
-  onSelectFrom(e) {
-    this.originFull = e.target.value;
-    this.selectedFrom = e.target.value.slice(-4,-1);
+  //Reactive form
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+
+  ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      from: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      to: ['', Validators.required]
+    });
+    this.thirdFormGroup = this._formBuilder.group({
+      date: ['', Validators.required]
+    });
   }
 
-  onSelectTo(e) {
-    this.destinationFull = e.target.value;
-    this.selectedTo = e.target.value.slice(-4,-1);
+  
+
+  onFirstSubmit() {
+    this.spinner = true;
+    let searchObj = {from:"", to: "", date: ""};
+    searchObj.from = this.firstFormGroup.value.from.slice(-4, -1);
+    searchObj.to = this.secondFormGroup.value.to.slice(-4, -1);
+    let date = this.thirdFormGroup.value.date;
+    searchObj.date = `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}`;
+
+    this.dataService.getData(searchObj)
+      .subscribe(res => {
+        this.response = res.json()
+      });
+
+    setTimeout(() => {
+      this.isLoaded = true;
+      this.spinner = false;
+      this.openDialog();
+    }, 1000);
+  
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: {response: this.response, loadStatus: this.isLoaded},
+      height: '450px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+
+  } 
+    
+
+    
 }
+
+
+

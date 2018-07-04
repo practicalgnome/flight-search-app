@@ -61,3 +61,42 @@ button:disabled {
         max-width: 100%;
     }
 }
+
+
+
+.card {
+    top: 20vh;
+    margin: 0 auto;
+    max-width: 80%;
+}
+
+
+
+mat-horizontal-stepper {
+    margin-top: 75px;
+}
+  
+.mat-card-header {
+    margin-bottom: 30px;
+}
+
+mat-form-field {
+    font-size: 14px;
+    width: 450px;
+}
+
+mat-option {
+    font-size: 14px;
+}
+
+.mat-list-item {
+    font-size: 14px;
+}
+
+.mat-list {
+    margin-bottom: 20px;
+}
+
+.mat-icon-button, button {
+    outline: none;
+}

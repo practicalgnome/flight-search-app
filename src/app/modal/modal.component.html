@@ -1,0 +1,27 @@
+
+  <mat-dialog-content>
+    <h3>Search results</h3>
+    <mat-paginator [length]="100"
+                [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+      <mat-list *ngFor="let res of data.response.results">
+        <mat-list-item>From: {{ data.response.origin }}</mat-list-item>
+        <mat-list-item>Destination: {{ res.destination }}</mat-list-item>
+        <mat-list-item>Company name: {{ res.airline }}</mat-list-item>
+        <mat-list-item>Cost: {{ res.price }} {{ data.response.currency }}</mat-list-item>
+        <mat-list-item>Date: {{ res.departure_date }}</mat-list-item>
+      </mat-list>
+    </mat-paginator>
+  </mat-dialog-content>
+    
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+  </mat-dialog-actions>
+  
+
+  <!-- <div class="modal-body modal-body-noData">
+    <p>No matches found</p>
+    <p>Try changing search criteria</p>
+  </div> -->
+

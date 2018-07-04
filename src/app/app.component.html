@@ -1,17 +1,5 @@
 <!-- The content below is only a placeholder and can be replaced. -->
-<!-- Button trigger modal -->
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button> -->
 
-<!-- Modal -->
-<!-- <button mat-button>Basic</button>
-<button mat-button color="primary">Primary</button>
-<button mat-button color="accent">Accent</button>
-<button mat-button color="warn">Warn</button>
-<button mat-button disabled>Disabled</button>
-<a mat-button routerLink=".">Link</a> -->
 <div 
   class="modal fade"
   id="exampleModalCenter" 
@@ -57,7 +45,7 @@
   </div>
 </div>
 
-<div class="jumbotron">
+<!-- <div class="jumbotron">
   <h1 class="display-4">Flight search</h1>
   <p class="lead">Here you can start your search</p>
   <hr class="my-4">
@@ -99,4 +87,79 @@
       </button>
     </form>
   </div>
-</div>
+</div> -->
+
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title><h2>Flight search</h2></mat-card-title>
+    <mat-card-subtitle>Here you can start your search</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Fill out origin</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="from" formControlName="from" (keyup)="keyPress($event)" [matAutocomplete]="from">
+          <mat-autocomplete #from="matAutocomplete">
+            <mat-option *ngFor="let res of dynResultsFrom" [value]="res.label">
+              {{res.label}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div>
+          <button mat-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Fill out destination</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="to" formControlName="to" (keyup)="keyPress($event)" [matAutocomplete]="to">
+          <mat-autocomplete #to="matAutocomplete">
+            <mat-option *ngFor="let res of dynResultsFrom" [value]="res.label">
+              {{res.label}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup">
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>Fill out date</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="date" formControlName="date" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <mat-list>
+        <mat-list-item> From: {{ this.firstFormGroup.value.from }} </mat-list-item>
+        <mat-list-item> To: {{ this.secondFormGroup.value.to }} </mat-list-item>
+        <mat-list-item> On: {{ this.thirdFormGroup.value.date }} </mat-list-item>
+      </mat-list>
+      <div>
+        <button mat-button matStepperPrevious >Back</button>
+        <button mat-button (click)="stepper.reset()" color="warn">Reset</button>
+        <button mat-button type="submit" color="primary" (click)="onFirstSubmit()">Search!</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-card>
+
+<mat-spinner *ngIf="spinner" ></mat-spinner>
