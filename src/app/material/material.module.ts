@@ -14,7 +14,7 @@ import { MatListModule } from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -34,8 +34,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatListModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
-    // MatMomentDateModule
+    MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
   exports: [
     MatButtonModule, 
@@ -54,8 +54,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatListModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
-    // MatMomentDateModule
+    MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
 })
 export class MaterialModule { }

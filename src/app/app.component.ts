@@ -1,126 +1,100 @@
-import { OnInit } from '@angular/core';
+
+import { OnInit, Input } from '@angular/core';
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { DataService } from './data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from './modal/modal.component';
 import { MatDialog } from '@angular/material';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
 
   constructor(private dataService: DataService, private _formBuilder: FormBuilder, public dialog: MatDialog) {}
 
-  originFull;
-  destinationFull;
-  origin;
-  currency;
   response;
-  results;
+  activeNext = false;
+  progress = 0;
   spinner = false;
-
-  dynResultsFrom;
-  dynResultsTo;
-  selectedFrom;
-  selectedTo;
-
+  dynResults = [];
   errResponse = false;
-  isLoaded = false;
-
-
-  onSubmit(form: NgForm) {
-
-    this.dataService.getData(form.value)
-      .subscribe(res => this.response = res.json());
-    setTimeout(() => {
-      if (this.response) {
-        this.origin = this.response.origin;
-        this.currency = this.response.currency;
-        this.results = this.response.results;
-        this.isLoaded = true;
-      } else {
-        this.errResponse = true;
-        this.isLoaded = true;
-      
-      }
-    }, 1000);
-    form.reset();
-    this.response = "";
-  }
-
-  modalClose() {
-    this.errResponse = false;
-    this.isLoaded = false;
-    this.dynResultsFrom = [];
-    this.dynResultsTo = [];
-  }
+  searchObj = {from:"", to: "", date: ""};
 
   printPage() {
     window.print();
   }
 
   keyPress(e) {
-    this.dataService.dynSearch({city: e.target.value})
-      .subscribe(res => this.dynResultsFrom = res.json());
+    if (e.target.value.length > 2) {
+      this.dataService.dynSearch({city: e.target.value})
+        .subscribe(res => {
+          this.dynResults = res.json();
+        });
+    }
   }
 
   //Reactive form
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  fromForm: FormGroup;
+  toForm: FormGroup;
+  dateForm: FormGroup;
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
+    this.fromForm = this._formBuilder.group({
       from: ['', Validators.required]
     });
-    this.secondFormGroup = this._formBuilder.group({
+    this.toForm = this._formBuilder.group({
       to: ['', Validators.required]
     });
-    this.thirdFormGroup = this._formBuilder.group({
+    this.dateForm = this._formBuilder.group({
       date: ['', Validators.required]
     });
   }
 
-  
-
-  onFirstSubmit() {
+  onSubmit(stepper) {
     this.spinner = true;
-    let searchObj = {from:"", to: "", date: ""};
-    searchObj.from = this.firstFormGroup.value.from.slice(-4, -1);
-    searchObj.to = this.secondFormGroup.value.to.slice(-4, -1);
-    let date = this.thirdFormGroup.value.date;
-    searchObj.date = `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}`;
+    this.searchObj.from = this.fromForm.value.from.slice(-4, -1);
+    this.searchObj.to = this.toForm.value.to.slice(-4, -1);
+    this.searchObj.date = moment(this.dateForm.value.date).format('YYYY-MM-DD');
 
-    this.dataService.getData(searchObj)
+    this.dataService.getData(this.searchObj)
       .subscribe(res => {
-        this.response = res.json()
+        this.response = res.json();
+        console.log(res.json());
+        this.openDialog();
+        this.spinner = false;
+        stepper.reset();
       });
-
-    setTimeout(() => {
-      this.isLoaded = true;
-      this.spinner = false;
-      this.openDialog();
-    }, 1000);
-  
   }
 
+  clearDyn() {
+    this.dynResults = [];
+    this.activeNext = false;
+  }
+  
   openDialog() {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: {response: this.response, loadStatus: this.isLoaded},
-      height: '450px'
+      data: {response: this.response},
+      height: 'auto',
+      width: '970px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe(() => {
+      this.searchObj = {from:"", to: "", date: ""};
+      this.response = "";
+      this.dynResults = [];
+      this.fromForm.reset();
+      this.toForm.reset();
+      this.dateForm.reset();
+
     });
 
   } 
-    
+
 
     
 }

@@ -48,8 +48,8 @@ app.get('/search', (req, res) => {
     .then(response => {
       res.send(response.data);
     })
-    .catch(error => {
-      res.send(error.message);
+    .catch(() => {
+      res.send([{"results": [{"destination": "jhkjhkjh"}]}]);
     });
 });
 

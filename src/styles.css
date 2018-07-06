@@ -1,9 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* @import url('https://fonts.googleapis.com/css?family=Fugaz+One'); */
+/* @import url('https://fonts.googleapis.com/css?family=Racing+Sans+One'); */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-/* @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500'); */
-@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+
 
 body {
-    background-color: lightgrey;
+    background-color: #f6f6f6;
 }
 
+/* * {
+    font-family: 'Racing Sans One', cursive;
+} */
+
+/* * {
+    font-family: 'Fugaz One', cursive;
+} */

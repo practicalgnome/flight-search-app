@@ -22,6 +22,7 @@ import { ModalComponent } from './modal/modal.component';
     MaterialModule
   ],
   providers: [DataService],
-  bootstrap: [AppComponent, ModalComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ModalComponent]
 })
 export class AppModule { }

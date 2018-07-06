@@ -1,142 +1,54 @@
 <!-- The content below is only a placeholder and can be replaced. -->
 
-<div 
-  class="modal fade"
-  id="exampleModalCenter" 
-  tabindex="-1" 
-  role="dialog" 
-  aria-labelledby="exampleModalCenterTitle" 
-  aria-hidden="true"
-  data-keyboard="false" 
-  data-backdrop="static"
->
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Results</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div *ngIf="isLoaded && !errResponse">
-          <div *ngFor="let res of results">
-            <p>From: {{ originFull }}</p>
-            <p>Destination: {{ destinationFull }}</p>
-            <p>Company name: {{ res.airline }}</p>
-            <p>Cost: {{ res.price }} {{currency}}</p>
-            <p>Date: {{ res.departure_date }}</p>
-            <hr/>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="!isLoaded">
-        <p>  Loading...</p>
-      </div>
-      <div class="modal-body modal-body-noData" *ngIf="errResponse">
-        <p>No matches found</p>
-        <p>Try changing search criteria</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="modal-button btn btn-secondary" data-dismiss="modal" (click)="modalClose()">Close</button>
-        <button type="button" class="modal-button btn btn-info" (click)="printPage()" [disabled]="true">Print results</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- <div class="jumbotron">
-  <h1 class="display-4">Flight search</h1>
-  <p class="lead">Here you can start your search</p>
-  <hr class="my-4">
-  <div class="form">
-    <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" autocomplete="off">
-
-      <div class="form-group">
-        <div class="input-group mb-6">
-          <div class="input-group-prepend">
-            <span class="input-group-text">From</span>
-          </div>
-          <input type="text" class="form-control" name="from" placeholder="..." required (keyup)="keyPress($event, true)" ngModel="{{selectedFrom}}"/>
-        </div>
-        <select class="form-control"  (change)="onSelectFrom($event)">
-          <option *ngFor="let res of dynResultsFrom" required>{{ res.label }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <div class="input-group mb-6">
-          <div class="input-group-prepend">
-            <span class="input-group-text">To</span>
-          </div>
-          <input type="text" class="form-control" name="to" placeholder="..." required (keyup)="keyPress($event, false)" ngModel="{{selectedTo}}"/>
-        </div>
-        <select class="form-control"  (change)="onSelectTo($event)">
-          <option *ngFor="let res of dynResultsTo">{{ res.label }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <div class="input-group mb-6">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Date</span>
-          </div>
-          <input type="date" class="form-control" name="date" required ngModel/>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModalCenter" [disabled]="!searchForm.form.valid">
-        Submit
-      </button>
-    </form>
-  </div>
-</div> -->
-
-<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button> -->
 <mat-card class="card">
   <mat-card-header>
     <mat-card-title><h2>Flight search</h2></mat-card-title>
     <mat-card-subtitle>Here you can start your search</mat-card-subtitle>
   </mat-card-header>
-  <mat-divider></mat-divider>
+  <mat-progress-bar *ngIf="!spinner"></mat-progress-bar>
+  <mat-progress-bar *ngIf="spinner" mode="indeterminate"></mat-progress-bar>
   <mat-horizontal-stepper [linear]="true" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
+    <mat-step [stepControl]="fromForm">
+      <form [formGroup]="fromForm">
         <ng-template matStepLabel>Fill out origin</ng-template>
         <mat-form-field>
-          <input matInput placeholder="from" formControlName="from" (keyup)="keyPress($event)" [matAutocomplete]="from">
+          <input matInput placeholder="from" formControlName="from" (keyup)="keyPress($event)" [matAutocomplete]="from" spellcheck="false">
           <mat-autocomplete #from="matAutocomplete">
-            <mat-option *ngFor="let res of dynResultsFrom" [value]="res.label">
+            <mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>
+            <mat-option *ngFor="let res of dynResults" [value]="res.label" (click)="activeNext = true">
               {{res.label}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
         <div>
-          <button mat-button color="primary" matStepperNext>Next</button>
+          <button mat-button color="primary" matStepperNext (click)="clearDyn()" [disabled]="!activeNext">Next</button>
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-      <form [formGroup]="secondFormGroup">
+    <mat-step [stepControl]="toForm">
+      <form [formGroup]="toForm">
         <ng-template matStepLabel>Fill out destination</ng-template>
         <mat-form-field>
-          <input matInput placeholder="to" formControlName="to" (keyup)="keyPress($event)" [matAutocomplete]="to">
+          <input matInput placeholder="to" formControlName="to" (keyup)="keyPress($event)" [matAutocomplete]="to" spellcheck="false">
           <mat-autocomplete #to="matAutocomplete">
-            <mat-option *ngFor="let res of dynResultsFrom" [value]="res.label">
+            <mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>
+            <mat-option *ngFor="let res of dynResults" [value]="res.label" (click)="activeNext = true">
               {{res.label}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button matStepperPrevious (click)="activeNext = true">Back</button>
+          <button mat-button matStepperNext [disabled]="!activeNext">Next</button>
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup">
-      <form [formGroup]="thirdFormGroup">
+    <mat-step [stepControl]="dateForm">
+      <form [formGroup]="dateForm">
         <ng-template matStepLabel>Fill out date</ng-template>
         <mat-form-field>
-          <input matInput placeholder="date" formControlName="date" [matDatepicker]="picker">
+          <input matInput placeholder="date" formControlName="date" [matDatepicker]="picker" autocomplete="off">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -148,18 +60,20 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
-      <mat-list>
-        <mat-list-item> From: {{ this.firstFormGroup.value.from }} </mat-list-item>
-        <mat-list-item> To: {{ this.secondFormGroup.value.to }} </mat-list-item>
-        <mat-list-item> On: {{ this.thirdFormGroup.value.date }} </mat-list-item>
-      </mat-list>
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <p><mat-icon>flight_takeoff</mat-icon> {{ this.fromForm.value.from }}</p>
+          <p><mat-icon>flight_land</mat-icon> {{ this.toForm.value.to }}</p>
+          <p><mat-icon>event</mat-icon> {{ this.dateForm.value.date }}</p>
+        </mat-card-content>
+      </mat-card>
       <div>
         <button mat-button matStepperPrevious >Back</button>
         <button mat-button (click)="stepper.reset()" color="warn">Reset</button>
-        <button mat-button type="submit" color="primary" (click)="onFirstSubmit()">Search!</button>
+        <button mat-button type="submit" color="primary" (click)="onSubmit(stepper)">Search</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>
 </mat-card>
 
-<mat-spinner *ngIf="spinner" ></mat-spinner>
+<!-- <mat-spinner *ngIf="spinner" class="spinner"></mat-spinner> -->
