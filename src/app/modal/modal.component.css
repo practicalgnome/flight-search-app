@@ -2,7 +2,7 @@ button {
     outline: none;
 }
 
-.modal-header::children {
+.modal-header {
  display: inline-block;
 }
 
@@ -18,4 +18,10 @@ h3 {
     font-size: 36px;
     /* vertical-align: text-top; */
     margin-right: 15px;
+}
+
+.emptyResponse {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
 }

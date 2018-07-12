@@ -1,11 +1,11 @@
-
-import { OnInit, Input } from '@angular/core';
-import { Component } from '@angular/core';
-import { DataService } from './data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalComponent } from './modal/modal.component';
-import { MatDialog } from '@angular/material';
+import {OnInit, Input} from '@angular/core';
+import {Component} from '@angular/core';
+import {DataService} from './data.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ModalComponent} from './modal/modal.component';
+import {MatDialog} from '@angular/material';
 import * as moment from 'moment';
+import {parseHttpResponse} from "selenium-webdriver/http";
 
 @Component({
   selector: 'app-root',
@@ -19,13 +19,16 @@ export class AppComponent implements OnInit {
 
   response;
   activeNext = false;
-  progress = 0;
   spinner = false;
   dynResults = [];
   errResponse = false;
-  searchObj = {from:"", to: "", date: ""};
+  searchObj = {from: '', to: '', date: ''};
+  // Reactive form
+  fromForm: FormGroup;
+  toForm: FormGroup;
+  dateForm: FormGroup;
 
-  printPage() {
+   printPage() {
     window.print();
   }
 
@@ -37,11 +40,6 @@ export class AppComponent implements OnInit {
         });
     }
   }
-
-  //Reactive form
-  fromForm: FormGroup;
-  toForm: FormGroup;
-  dateForm: FormGroup;
 
   ngOnInit() {
     this.fromForm = this._formBuilder.group({
@@ -64,7 +62,7 @@ export class AppComponent implements OnInit {
     this.dataService.getData(this.searchObj)
       .subscribe(res => {
         this.response = res.json();
-        console.log(res.json());
+        console.log(this.response.results.length);
         this.openDialog();
         this.spinner = false;
         stepper.reset();
@@ -75,7 +73,7 @@ export class AppComponent implements OnInit {
     this.dynResults = [];
     this.activeNext = false;
   }
-  
+
   openDialog() {
     const dialogRef = this.dialog.open(ModalComponent, {
       data: {response: this.response},
@@ -84,8 +82,8 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.searchObj = {from:"", to: "", date: ""};
-      this.response = "";
+      this.searchObj = {from: '', to: '', date: ''};
+      this.response = '';
       this.dynResults = [];
       this.fromForm.reset();
       this.toForm.reset();
@@ -93,10 +91,9 @@ export class AppComponent implements OnInit {
 
     });
 
-  } 
+  }
 
 
-    
 }
 
 

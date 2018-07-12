@@ -1,27 +1,33 @@
 <div class="modal-header">
   <h3>Search results</h3>
   <mat-icon>list</mat-icon>
-</div> 
+</div>
 <mat-dialog-content>
   <mat-divider></mat-divider>
-    <div *ngFor="let res of data.response.results">
-      <mat-icon>short_text</mat-icon>
+  <div class="emptyResponse" *ngIf="data.response.results.length === 0">
+    <p>No results</p>
+    <p>Try changing search criteria</p>
+  </div>
+  <div *ngFor="let res of data.response.results">
+    <mat-icon>short_text</mat-icon>
+    <div *ngIf="data.response.results.length > 0">
       <p>From: {{ data.response.origin }}</p>
       <p>Destination: {{ res.destination }}</p>
       <p>Company name: {{ res.airline }}</p>
       <p>Cost: {{ res.price }} {{ data.response.currency }}</p>
       <p>Date: {{ res.departure_date }}</p>
-      <mat-divider></mat-divider>
     </div>
+    <mat-divider></mat-divider>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Back</button>
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial disabled="true">Print</button>
-</mat-dialog-actions>    
+</mat-dialog-actions>
 
 
-  <!-- <div class="modal-body modal-body-noData">
-    <p>No matches found</p>
-    <p>Try changing search criteria</p>
-  </div> -->
+<!-- <div class="modal-body modal-body-noData">
+  <p>No matches found</p>
+  <p>Try changing search criteria</p>
+</div> -->
 

@@ -4,7 +4,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -19,14 +19,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   imports: [
     MatButtonModule,
-    MatCheckboxModule, 
-    MatAutocompleteModule, 
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
-    BrowserAnimationsModule, 
-    MatDatepickerModule, 
-    MatNativeDateModule, 
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule,
     MatStepperModule,
     MatDividerModule,
@@ -38,14 +38,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatProgressBarModule
   ],
   exports: [
-    MatButtonModule, 
-    MatCheckboxModule, 
-    MatAutocompleteModule, 
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
-    BrowserAnimationsModule, 
-    MatDatepickerModule, 
+    MatButtonModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
     MatStepperModule,

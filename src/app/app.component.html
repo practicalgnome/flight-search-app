@@ -15,7 +15,7 @@
         <mat-form-field>
           <input matInput placeholder="from" formControlName="from" (keyup)="keyPress($event)" [matAutocomplete]="from" spellcheck="false">
           <mat-autocomplete #from="matAutocomplete">
-            <mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>
+            <!--<mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>-->
             <mat-option *ngFor="let res of dynResults" [value]="res.label" (click)="activeNext = true">
               {{res.label}}
             </mat-option>
@@ -32,7 +32,7 @@
         <mat-form-field>
           <input matInput placeholder="to" formControlName="to" (keyup)="keyPress($event)" [matAutocomplete]="to" spellcheck="false">
           <mat-autocomplete #to="matAutocomplete">
-            <mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>
+            <!--<mat-option *ngIf="dynResults.length == 0">No matches found</mat-option>-->
             <mat-option *ngFor="let res of dynResults" [value]="res.label" (click)="activeNext = true">
               {{res.label}}
             </mat-option>
